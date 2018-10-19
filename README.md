@@ -46,7 +46,7 @@ password : abc
 POST /oauth2/auth/validate
 
 请求header中加入：
-Authorization : Bearer {{token}}
+Authorization : Bearer {{access_token}}
 ```
 
 返回结果：
