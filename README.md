@@ -1,6 +1,12 @@
 # phalcon-oauth2
 phalcon 多模块实现的oauth2
 
+技术栈：
+
+[OAuth 2.0 Server](https://oauth2.thephpleague.com/)
+
+[PHP 框架 Phalcon](https://phalconphp.com/zh/)
+
 ## Composer 安装
 
 ```composer
