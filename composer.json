@@ -1,0 +1,5 @@
+{
+    "require": {
+        "tegaphilip/padlock": "^1.0"
+    }
+}
