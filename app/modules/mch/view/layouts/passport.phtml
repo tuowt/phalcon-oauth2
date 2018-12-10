@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <title>一家人家谱系统登录</title>
+    <?php
+        $this->assets->addCss("statics/mch/css/login/style.css");
+    ?>
+    <?php $this->assets->outputCss(); ?>
+</head>
+<body class="page-login-v3">
+    <?php echo $this->getContent(); ?>
+    <?php
+        $this->assets->addJs('statics/mch/js/jquery.min.js');
+        $this->assets->addJs('statics/mch/js/jquery.form.js');
+        $this->assets->addJs('statics/mch/vendor/layer/layer.js');
+    ?>
+    <?php $this->assets->outputJs(); ?>
+</body>
+</html>

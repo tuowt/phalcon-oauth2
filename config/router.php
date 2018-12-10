@@ -3,7 +3,7 @@
 $router = $di->getRouter();
 
 // Define your routes here
-$router->setDefaultModule("oauth2");
+$router->setDefaultModule("admin");
 
 $router->add("/:module/:controller/:action", [
     'module'     => 1,
