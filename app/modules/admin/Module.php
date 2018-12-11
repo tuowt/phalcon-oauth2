@@ -8,6 +8,9 @@
 
 namespace App\Module\Admin;
 
+use App\Library\Response;
+use App\Module\Admin\Element\HtmlElement;
+use App\Module\Admin\Middleware\SecurityMiddleware;
 use Phalcon\Loader;
 use Phalcon\DiInterface;
 use Phalcon\Mvc\Dispatcher;
@@ -23,7 +26,10 @@ class Module implements ModuleDefinitionInterface
         $di->get('Loader')->registerNamespaces([
             'App\\Module\\Admin\\Controller' => APP_PATH . '/modules/admin/controller',
             'App\\Module\\Admin\\Model'      => APP_PATH . '/modules/admin/model',
-            'App\\Module\\Admin\\Library'    => APP_PATH . '/modules/admin/library',
+            'App\\Module\\Admin\\Service'    => APP_PATH . '/modules/admin/service',
+            'App\\Module\\Admin\\Validation' => APP_PATH . '/modules/admin/validation',
+            'App\\Module\\Admin\\Middleware' => APP_PATH . '/modules/admin/middleware',
+            'App\\Module\\Admin\\Element'    => APP_PATH . '/modules/admin/element',
         ], true);
 
         $di->get('Loader')->register();
@@ -31,8 +37,12 @@ class Module implements ModuleDefinitionInterface
 
     public function registerServices(DiInterface $di) {
         $di->set('dispatcher', function () {
-            $dispatcher = new Dispatcher();
+            $eventsManager = new Manager();
 
+            $eventsManager->attach('dispatch:beforeExecuteRoute', (new SecurityMiddleware()));
+
+            $dispatcher = new Dispatcher();
+            $dispatcher->setEventsManager($eventsManager);
             $dispatcher->setDefaultNamespace('App\\Module\\Admin\\Controller');
             return $dispatcher;
         });
@@ -47,6 +57,17 @@ class Module implements ModuleDefinitionInterface
             ]);
 
             return $view;
+        });
+
+        /**
+         * Response Handler
+         */
+        $di['response'] = function () {
+            return new Response();
+        };
+
+        $di->set('element', function () {
+            return new HtmlElement();
         });
     }
 }

@@ -1,0 +1,51 @@
+<?php
+$route = $this->element->getRoute();
+$menu_list = $this->element->getMenuList();
+$current_menu = $this->element->getCurrentMenu($menu_list, $route);
+?>
+<div class="sidebar <?= $current_menu && count($current_menu['list']) ? 'sidebar-sub' : null ?>">
+    <div class="sidebar-1">
+        <div class="logo">
+            <a class="home-link"
+               href="<?= $this->url->get('mch/default/index') ?>">家谱管理系统</a>
+        </div>
+        <div>
+            <?php foreach ($menu_list as $item): ?>
+                <a class="nav-item <?= $this->element->activeMenu($item, $route) ?>"
+                   href="<?= $this->url->get($item['route']) ?>">
+                    <span class="nav-icon iconfont <?= $item['icon'] ?>"></span>
+                    <span><?= $item['name'] ?></span>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php if ($current_menu && count($current_menu['list'])): ?>
+        <div class="sidebar-2">
+            <div class="current-menu-name"><?= $current_menu['name'] ?></div>
+            <div class="sidebar-content">
+                <?php foreach ($current_menu['list'] as $item): ?>
+                    <?php if (isset($item['list']) && is_array($item['list']) && count($item['list']) > 0): ?>
+                        <a class="nav-item <?= $this->element->activeMenu($item, $route) ?>"
+                           href="javascript:">
+                            <span class="nav-pointer iconfont icon-play_fill"></span>
+                            <span><?= $item['name'] ?></span>
+                        </a>
+                        <div class="sub-item-list">
+                            <?php foreach ($item['list'] as $sub_item): ?>
+                                <a class="nav-item <?= $this->element->activeMenu($sub_item, $route) ?>"
+                                   href="<?= $this->url->get($sub_item['route']) ?>">
+                                    <span><?= $sub_item['name'] ?></span>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <a class="nav-item <?= $this->element->activeMenu($item, $route) ?>"
+                           href="<?= $this->url->get($item['route']) ?>">
+                            <span><?= $item['name'] ?></span>
+                        </a>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>

@@ -1,14 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>一家人家谱</title>
+    <?php
+    $this->assets->addCss("//at.alicdn.com/t/font_353057_xjg7zdpmf54mfgvi.css");
+    $this->assets->addCss("statics/mch/css/bootstrap.min.css");
+    $this->assets->addCss("statics/mch/css/jquery.datetimepicker.min.css");
+    $this->assets->addCss("statics/css/flex.css");
+    $this->assets->addCss("statics/css/common.css");
+    $this->assets->addCss("statics/mch/css/common.v2.css");
+    ?>
+    <?php $this->assets->outputCss(); ?>
 </head>
 <body>
-<div class="container">
-    <?php echo $this->getContent(); ?>
+<?php $this->partial("common/sidebar"); ?>
+<div class="main">
+    <div class="main-header">
+        <?php $this->partial("common/main-header"); ?>
+    </div>
+    <div class="main-body">
+        <?php echo $this->getContent(); ?>
+    </div>
 </div>
+
+<?php
+$this->assets->addJs('statics/mch/js/jquery.min.js');
+$this->assets->addJs('statics/mch/js/vue.js');
+$this->assets->addJs('statics/mch/js/tether.min.js');
+$this->assets->addJs('statics/mch/js/bootstrap.min.js');
+
+$this->assets->addJs('statics/mch/js/plupload.full.min.js');
+$this->assets->addJs('statics/mch/js/jquery.datetimepicker.full.min.js');
+$this->assets->addJs('statics/js/common.js');
+$this->assets->addJs('statics/mch/js/common.v2.js');
+$this->assets->addJs('statics/mch/js/clipboard.js');
+
+$this->assets->addJs('statics/mch/vendor/layer/layer.js');
+$this->assets->addJs('statics/mch/vendor/laydate/laydate.js');
+?>
+<?php $this->assets->outputJs(); ?>
 </body>
 </html>
