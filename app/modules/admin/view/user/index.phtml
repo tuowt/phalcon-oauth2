@@ -1,0 +1,184 @@
+
+<div class="panel mb-3" id="app">
+    <div class="panel-header">用户列表</div>
+    <div class="panel-body">
+        <div class="dropdown float-left">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <?php if (isset($_GET['level'])): ?>
+                    <?php foreach ($level_list as $index => $value): ?>
+                        <?php if ($value['level'] == $_GET['level']): ?>
+                            <?= $value['name']; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    全部类型
+                <?php endif; ?>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                 style="max-height: 200px;overflow-y: auto">
+                <a class="dropdown-item" href="<?= $this->url->get('admin/user/index') ?>">全部会员</a>
+                <?php foreach ($level_list as $index => $value): ?>
+                    <a class="dropdown-item"
+                       href="<?= $this->url->get('admin/user/index', array_merge($_GET, ['level' => $value['level'], 'page' => 1])) ?>"><?= $value['name'] ?></a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="float-right mb-4">
+            <form method="get">
+
+                <?php $_s = ['keyword', 'page', 'per-page'] ?>
+                <?php foreach ($_GET as $_gi => $_gv):if (in_array($_gi, $_s)) continue; ?>
+                    <input type="hidden" name="<?= $_gi ?>" value="<?= $_gv ?>">
+                <?php endforeach; ?>
+
+                <div class="input-group">
+                    <input class="form-control"
+                           placeholder="微信昵称"
+                           name="keyword"
+                           autocomplete="off"
+                           value="<?= isset($_GET['keyword']) ? trim($_GET['keyword']) : null ?>">
+                    <span class="input-group-btn">
+                    <button class="btn btn-primary">搜索</button>
+                </span>
+                </div>
+            </form>
+        </div>
+        <table class="table table-bordered bg-white">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>头像</th>
+                <th>昵称</th>
+                <th>绑定手机号</th>
+                <th>联系方式</th>
+                <th>备注</th>
+                <th>加入时间</th>
+                <th>身份</th>
+                <th>当前积分</th>
+            </tr>
+            </thead>
+            <?php foreach ($list as $u): ?>
+                <tr>
+                    <td><?= $u['id'] ?></td>
+                    <td>
+                        <img src="<?= $u['avatar_url'] ?>" style="width: 34px;height: 34px;margin: -.6rem 0;">
+                    </td>
+                    <td><?= $u['nickname']; ?><br><?= $u['wechat_open_id'] ?></td>
+                    <td><?= $u['binding']; ?></td>
+                    <td><?= $u['contact_way']; ?></td>
+                    <td><?= $u['comments']; ?></td>
+                    <td><?= date('Y-m-d H:i:s', $u['addtime']) ?></td>
+                    <td>
+                        <?= $u['l_name'] ? $u['l_name'] : '普通用户' ?>
+                        <?= $u['is_clerk'] == 1 ? "（核销员）" : "" ?>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-link"
+                           href="<?= $this->url->get('mch/order/index', ['keyword' => $u['nickname'], 'keyword_1' => 2]) ?>"><?= $u['order_count'] ?></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-link"
+                           href="<?= $this->url->get('mch/user/coupon', ['user_id' => $u['id']]) ?>"><?= $u['coupon_count'] ?></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-link"
+                           href="<?= $this->url->get('mch/user/card', ['user_id' => $u['id']]) ?>"><?= $u['card_count'] ?></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-link"
+                           href="<?= $this->url->get('mch/user/rechange-log', ['user_id' => $u['id']]) ?>"><?= $u['integral'] ?></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-link"
+                           href="<?= $this->url->get('mch/user/recharge-money-log', ['user_id' => $u['id']]) ?>"><?= $u['money'] ?></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+        <div class="text-center">
+            <div class="row">
+                <div class="col-sm-1">
+                    <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+                        <?php echo $page->current, "/", $page->total_pages ?>
+                    </p>
+                </div>
+                <div class="col-sm-11">
+                    <nav>
+                        <ul class="pagination">
+                            <li><?php echo $this->tag->linkTo("$plural$/search", "First") ?></li>
+                            <li><?php echo $this->tag->linkTo("$plural$/search?page=" . $page->before, "Previous") ?></li>
+                            <li><?php echo $this->tag->linkTo("$plural$/search?page=" . $page->next, "Next") ?></li>
+                            <li><?php echo $this->tag->linkTo("$plural$/search?page=" . $page->last, "Last") ?></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="text-muted"><?= $row_count ?>条数据</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('click', '.del', function () {
+        var a = $(this);
+        $.myConfirm({
+            content: a.data('content'),
+            confirm: function () {
+                $.ajax({
+                    url: a.data('url'),
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.code == 0) {
+                            window.location.reload();
+                        } else {
+                            $.myAlert({
+                                title: res.msg
+                            });
+                        }
+                    }
+                });
+            }
+        });
+        return false;
+    });
+    $(document).on('click', '.rechangeBtn', function () {
+        var a = $(this);
+        var id = a.data('id');
+        var integral = a.data('integral');
+        $('#user_id').val(id);
+        $('.integral-reduce').attr('data-integral', integral);
+    });
+    $(document).on('change', '.integral-reduce', function () {
+        $('#integral').val($(this).data('integral'));
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            user_id: -1,
+            price: 0,
+            type: -1,
+            rechargeType: 1,
+            money: 0
+        }
+    });
+
+    $(document).on('click', '.rechargeMoney', function () {
+        app.type = 1;
+        app.user_id = $(this).data('id');
+    });
+
+    $(document).on('change', "input[name='rechargeType']", function () {
+        app.rechargeType = $(this).val();
+    });
+
+    $(document).on('click', '.close-modal', function () {
+        app.user_id = -1;
+        app.money = 0;
+        app.price = 0;
+        app.rechargeType = 1;
+        app.type = -1;
+    });
+</script>

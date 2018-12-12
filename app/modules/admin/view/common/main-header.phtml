@@ -1,0 +1,11 @@
+<div class="float-right">
+    <div class="btn-group float-left">
+        <a href="javascript:" class="btn btn-secondary dropdown-toggle"
+           data-toggle="dropdown"><?= $this->element->getAccountName() ?></a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="<?= $this->url->get('admin/account/index') ?>">账户设置</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="<?= $this->url->get('admin/passport/logout') ?>">注销</a>
+        </div>
+    </div>
+</div>

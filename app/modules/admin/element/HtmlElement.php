@@ -75,19 +75,12 @@ class HtmlElement extends Component
             ],
             [
                 'name'  => '用户管理',
-                'route' => 'admin/member/index',
+                'route' => 'admin/user/index',
                 'icon'  => 'icon-people',
                 'list'  => [
                     [
                         'name'  => '用户列表',
-                        'route' => 'admin/member/index',
-                        'sub'   => [
-                            'mch/user/card',
-                            'mch/user/coupon',
-                            'mch/user/rechange-log',
-                            'mch/user/edit',
-                            'mch/user/recharge-money-log',
-                        ],
+                        'route' => 'admin/user/index',
                     ],
                 ],
             ],
@@ -131,6 +124,15 @@ class HtmlElement extends Component
     }
 
     public function getRoute() {
-        return 'admin/system/wechat-setting';
+        $route = [
+            $this->dispatcher->getModuleName(),
+            $this->dispatcher->getControllerName(),
+            $this->dispatcher->getActionName(),
+        ];
+        return implode('/', $route);
+    }
+
+    public function getAccountName() {
+        return $this->session->get('User');
     }
 }
