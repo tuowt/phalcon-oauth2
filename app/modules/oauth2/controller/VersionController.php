@@ -13,7 +13,10 @@ class VersionController extends BaseController
 {
     public function indexAction()
     {
-        $data = "Welcome to " . $this->config->appParams->appName . " V" . $this->config->appParams->appVersion;
-        return $this->response->sendSuccess($data);
+        echo date('Y-m-d H:i:s', strtotime('+719 hours'));exit;
+        if($this->request->getQuery('s')) {
+            $data = "Welcome to " . $this->config->appParams->appName . " V" . $this->config->appParams->appVersion;
+            return $this->response->sendSuccess($data);
+        }
     }
 }

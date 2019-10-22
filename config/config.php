@@ -29,6 +29,7 @@ return new \Phalcon\Config([
         'viewsDir'       => APP_PATH . '/views/',
         'pluginsDir'     => APP_PATH . '/plugins/',
         'libraryDir'     => APP_PATH . '/library/',
+        'logsDir'        => BASE_PATH . '/storage/logs/',
         'migrationsDir'  => BASE_PATH . '/migrations/',
         'cacheDir'       => BASE_PATH . '/storage/',
 
@@ -41,6 +42,10 @@ return new \Phalcon\Config([
         'appNamespace' => 'App',
         'appName'      => 'Padlock! The Phalcon Authentication Server',
         'appVersion'   => '0.1',
+        'log' => [
+            'level' => 'debug',
+            'file' => BASE_PATH . '/storage/logs/wxpay.log',
+        ],
     ],
     'oauth'       => [
         'refresh_token_lifespan'       => $oneMonthInterval,
